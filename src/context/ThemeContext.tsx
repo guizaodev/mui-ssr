@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, type ReactNode } from "react";
+import React, {
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+	type ReactNode,
+} from "react";
 import {
 	ThemeProvider as MuiThemeProvider,
 	type Theme,
@@ -9,14 +15,21 @@ import { useThemeStore } from "@/stores/themeStore";
 
 interface ThemeContextProps {
 	theme: Theme;
-	toggleTheme: () => void;
+	toggleTheme: VoidFunction;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+export const ThemeProvider = ({
+	children,
+	initialTheme,
+}: { children: ReactNode; initialTheme: "light" | "dark" }) => {
 	const { mode, toggleTheme } = useThemeStore();
-	const theme = getTheme(mode);
+	const [theme, setTheme] = useState<Theme>(getTheme(initialTheme));
+
+	useEffect(() => {
+		setTheme(getTheme(mode));
+	}, [mode]);
 
 	return (
 		<ThemeContext.Provider value={{ theme, toggleTheme }}>

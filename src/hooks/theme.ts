@@ -18,6 +18,7 @@ const darkTheme = createTheme({
 		mode: "dark",
 		primary: {
 			main: "#eb8d8d", // Red color for primary buttons
+			light: "#f44336",
 		},
 	},
 	typography: {

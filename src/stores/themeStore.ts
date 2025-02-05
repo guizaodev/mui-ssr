@@ -10,13 +10,16 @@ export const useThemeStore = create<ThemeState>()(
 	persist(
 		(set) => ({
 			mode: "light",
-			toggleTheme: () =>
-				set((state) => ({
-					mode: state.mode === "light" ? "dark" : "light",
-				})),
+			toggleTheme: () => {
+				set((state) => {
+					const newMode = state.mode === "light" ? "dark" : "light";
+					document.cookie = `theme=${newMode}; path=/`;
+					return { mode: newMode };
+				});
+			},
 		}),
 		{
-			name: "theme", // name of the item no storage (must be unique)
+			name: "theme", // name of the item in storage (must be unique)
 		},
 	),
 );
